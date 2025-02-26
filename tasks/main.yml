@@ -1,0 +1,32 @@
+---
+- name: Create group googlecloud
+  ansible.builtin.group:
+    name: googlecloud
+    state: present
+
+- name: Create Google cloud directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0750
+    group: googlecloud
+  loop:
+    - "/etc/googlecloud"
+    - "/etc/googlecloud/serviceaccounts"
+
+- name: Write SA keys
+  ansible.builtin.copy:
+    dest: "/etc/googlecloud/serviceaccounts/{{ item }}"
+    src: "{{ item }}"
+    mode: 0440
+    owner: root
+    group: googlecloud
+  loop:
+    - "/Users/ronnyforberger/google-secrets/production-300716-80cecefe51f0.json"
+
+
+
+
+
+
+
